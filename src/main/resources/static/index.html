@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <title>Отправка на сервер</title>
+
+    <link rel="stylesheet" href="css/mycss.css"/>
+
+    <script type="text/javascript">
+        function getUser() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "api/select/user/by/id");
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onload = (e) => {
+                alert("Получен ответ" + e.target.response)
+            };
+            var user_id = document.getElementById("input_user_id").value;
+            var params = {"id": user_id};
+            xhr.send(JSON.stringify(params));
+        }
+
+        function createUser() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "api/select/user/new/user");
+            xhr.setRequestHeader("Content-type", "application/json");
+            xhr.onload = (e) => {
+                alert("Получен ответ" + e.target.response)
+            };
+            var name = document.getElementById("input_name").value;
+            var date = document.getElementById("input_date").value;
+            var phone = document.getElementById("input_phone").value;
+            var params = {
+                "name": name,
+                "birthday": date,
+                "numberPhone": phone
+            };
+            xhr.send(JSON.stringify(params));
+        }
+    </script>
+</head>
+
+<body>
+<table>
+    <tr>
+        <td>Введите имя:</td>
+        <td><input id="input_name" type="text" value="Никита"></td>
+    </tr>
+    <tr>
+        <td>Введите дату рождения:</td>
+        <td><input id="input_date" type="date" value="29.06.1998"></td>
+        </td>
+    </tr>
+    <tr>
+        <td>Введите номер телефона:</td>
+        <td><input id="input_phone" type="text" value="1234567890"></td>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><input type="submit" value="Добавить" onclick="createUser()"></td>
+    </tr>
+</table>
+
+</body>
+</html>
