@@ -43,13 +43,14 @@ public class DbSqlite implements InitializingBean {
         String query = "select * from USER where id = " + id;
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
              Statement stat = conn.createStatement()) {
-                    ResultSet resultSet = stat.executeQuery(query);
-                    User user = new User();
-                    user.setId(resultSet.getInt("id"));
-                    user.setBirthday(resultSet.getDate("birthday"));
-                    user.setName(resultSet.getString("name"));
-                    user.setNumberPhone(resultSet.getString("phone_number"));
-                    return user;
+            ResultSet resultSet = stat.executeQuery(query);
+            User user = new User();
+            user.setId(resultSet.getInt("id"));
+            user.setName(resultSet.getString("name"));
+            user.setBirthday(resultSet.getDate("birthday"));
+            user.setNumberPhone(resultSet.getString("phone_number"));
+            user.setActivity(resultSet.getString("activity"));
+            return user;
         } catch (SQLException ex) {
             log.log(Level.WARNING, "Не удалось выполнить запрос", ex);
             return new User();
@@ -57,10 +58,10 @@ public class DbSqlite implements InitializingBean {
     }
 
     public Boolean createNewUser(User user) {
-        String query = "insert into USER (name, birthday, phone_number ) values ('" + user.getName() + "','" + user.getTimeBirthday() + "','" + user.getNumberPhone() + "');";
+        StringBuffer query = new StringBuffer("insert into USER (name, birthday, phone_number, activity ) values ('" + user.getName() + "','" + user.getTimeBirthday() + "','" + user.getNumberPhone() + "','" + user.getActivity() + "');");
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
              Statement stat = conn.createStatement()) {
-            return stat.execute(query);
+            return stat.execute(query.toString());
         } catch (SQLException ex) {
             log.log(Level.WARNING, "Не удалось добавить пользователя", ex);
             return null;

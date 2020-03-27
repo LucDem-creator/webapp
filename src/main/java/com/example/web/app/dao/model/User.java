@@ -7,6 +7,7 @@ public class User {
     private String name;
     private Date birthday;
     private String numberPhone;
+    private String activity;
 
     public Integer getId() {
         return id;
@@ -24,13 +25,9 @@ public class User {
         this.name = name;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
+    public Long getTimeBirthday() { return birthday.getTime(); }
 
-    public Long getTimeBirthday() {
-        return birthday.getTime();
-    }
+    public Date getBirthday() { return birthday; }
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
@@ -43,4 +40,8 @@ public class User {
     public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
     }
+
+    public String getActivity() { return activity; }
+
+    public void setActivity(String activity) { this.activity = activity; }
 }
