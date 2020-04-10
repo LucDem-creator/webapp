@@ -1,5 +1,6 @@
 package com.example.web.app.controllers;
 
+import com.example.web.app.api.request.ListId;
 import com.example.web.app.api.request.UserByIdRequest;
 import com.example.web.app.dao.DbSqlite;
 import com.example.web.app.dao.model.User;
@@ -34,9 +35,19 @@ public class SelectUserController {
     @ApiOperation(value = "Create New User")
     @RequestMapping(value = "new/user", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> createNewUser(@RequestBody User new_user) {
+    public ResponseEntity<Boolean> createNewUser(@RequestBody User newUser) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(dbSqlite.createNewUser(new_user), headers, HttpStatus.OK);
+        return new ResponseEntity<>(dbSqlite.createNewUser(newUser), headers, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Receive list id")
+    @RequestMapping(value = "get/list/id", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ListId> getUsersId() {
+        ListId listId = dbSqlite.getAllUsersId();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(listId, headers, HttpStatus.OK);
     }
 }

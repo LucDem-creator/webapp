@@ -1,10 +1,13 @@
 package com.example.web.app.dao;
 
+import com.example.web.app.api.request.ListId;
 import com.example.web.app.dao.model.User;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +61,15 @@ public class DbSqlite implements InitializingBean {
     }
 
     public Boolean createNewUser(User user) {
-        StringBuffer query = new StringBuffer("insert into USER (name, birthday, phone_number, activity ) values ('" + user.getName() + "','" + user.getTimeBirthday() + "','" + user.getNumberPhone() + "','" + user.getActivity() + "');");
+        StringBuffer query = new StringBuffer("insert into USER (name, birthday, phone_number, activity ) values ('");
+        query.append(user.getName());
+        query.append("','");
+        query.append(user.getTimeBirthday());
+        query.append("','");
+        query.append(user.getNumberPhone());
+        query.append("','");
+        query.append(user.getActivity());
+        query.append("');");
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
              Statement stat = conn.createStatement()) {
             return stat.execute(query.toString());
@@ -66,6 +77,23 @@ public class DbSqlite implements InitializingBean {
             log.log(Level.WARNING, "Не удалось добавить пользователя", ex);
             return null;
         }
+    }
 
+    public ListId getAllUsersId() {
+        String query = "select ID from USER";
+        ListId listId = new ListId();
+        List<Integer> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+             Statement stat = conn.createStatement()) {
+            ResultSet resultSet = stat.executeQuery(query);
+            while (resultSet.next()) {
+                list.add(resultSet.getInt("ID"));
+            }
+            listId.setListId(list);
+            return listId;
+        } catch (SQLException ex) {
+            log.log(Level.WARNING, "Не удалось получить список ID", ex);
+            return new ListId();
+        }
     }
 }
