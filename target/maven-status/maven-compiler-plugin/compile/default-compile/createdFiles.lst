@@ -1,0 +1,8 @@
+com\example\web\app\dao\DbSqlite.class
+com\example\web\app\WebAppExample.class
+com\example\web\app\dao\model\User.class
+com\example\web\app\api\request\ListId.class
+com\example\web\app\api\request\UserByIdRequest.class
+com\example\web\app\controllers\SelectUserController.class
+com\example\web\app\config\SwaggerConfig.class
+com\example\web\app\config\SecurityConfig.class

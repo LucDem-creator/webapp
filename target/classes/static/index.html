@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <title>Отправка на сервер</title>
+
+    <link rel="stylesheet" href="css/indexCSS.css"/>
+
+    <script type="text/javascript">
+        function createUser() {
+            if (testName() && testDate() && testPhoneNumber()) {
+                document.getElementById("block").submit();
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "api/select/user/new/user");
+                xhr.setRequestHeader("Content-type", "application/json");
+                var name = document.getElementById("input_name").value;
+                var date = document.getElementById("input_date").value;
+                var phone = document.getElementById("input_phone").value;
+                var activity = document.getElementById("input_activity").value;
+                var params = {
+                    "name": name,
+                    "birthday": date,
+                    "numberPhone": phone,
+                    "activity": activity
+                };
+                alert("Отправлено на сервер");
+                xhr.send(JSON.stringify(params));
+            } else if (!testName()) {
+                alert("Необходимо ввести имя.")
+            } else if (!testDate()) {
+                alert("Необходимо ввести день рождения\nне более 150 лет и\nне менее сегодняшнего дня. ")
+            } else if (!testPhoneNumber()) {
+                alert("Необходимо ввести 11 цифр номера.\nБез букв.\nБез других символов.")
+            } else {
+                alert("Данные не отправлены.\nОбратитесь к разработчику.")
+            }
+        }
+
+        function testName() {
+            var name = document.getElementById("input_name").value.trim();
+            if (name !== "") {
+                return true;
+            }
+        }
+
+        function testDate() {
+            var date = document.getElementById("input_date").value.split('-');
+            var compare = new Date(date[0], date[1] - 1, date[2]);
+            var now = new Date();
+            var min = new Date();
+            min.setFullYear(min.getFullYear() - 150);
+            if (compare < now && compare > min) {
+                return true;
+            }
+        }
+
+        function testPhoneNumber() {
+            var regExp = new RegExp("^[0-9]{10}[^A-Za-zА-ЯА-я]$");
+            var number = document.getElementById("input_phone").value;
+            if (regExp.test(number)) {
+                return true;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<form id="block" onsubmit="false">
+    <table>
+        <tr>
+            <td>Введите имя:</td>
+            <td><input form="block" id="input_name" type="text"></td>
+        </tr>
+        <tr>
+            <td>Введите дату рождения:</td>
+            <td><input form="block" id="input_date" type="date"></td>
+        </tr>
+        <tr>
+            <td>Введите номер телефона (только 11 цифр):</td>
+            <td><input form="block" id="input_phone" type="text"></td>
+        </tr>
+        <tr>
+            <td>Введите род занятий:</td>
+            <td><input form="block" id="input_activity" type="text"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input form="block" type="button" value="Добавить" onclick="createUser()"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input form="block" type="button" value="Перейти к базе" onclick="window.location='base.html'"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
